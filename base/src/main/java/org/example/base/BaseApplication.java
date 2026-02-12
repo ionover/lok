@@ -1,13 +1,13 @@
-package org.example.waliottest;
+package org.example.base;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WaliotTestApplication {
+public class BaseApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WaliotTestApplication.class, args);
+        SpringApplication.run(BaseApplication.class, args);
     }
 
 }

@@ -1,10 +1,10 @@
-package org.example.waliottest;
+package org.example.base;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WaliotTestApplicationTests {
+class BaseApplicationTests {
 
     @Test
     void contextLoads() {
