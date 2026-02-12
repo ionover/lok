@@ -1,8 +1,8 @@
 package org.example.base.controller;
 
-import org.apache.coyote.BadRequestException;
 import org.example.base.dto.RequestModel;
 import org.example.base.enums.Type;
+import org.example.base.exceptions.BadRequestException;
 import org.example.base.service.IConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +40,13 @@ public class BaseController {
             throw new BadRequestException(String.format("Тип %s невозможно конвертировать", type));
         }
 
-        return converter.convert(model.getRequest());
+        try {
+            return converter.convert(model.getRequest());
+        } catch (Exception e) {
+            String msg = String.format("При конвертации произошла ошибка: %s", e.getMessage());
+            log.error(msg);
+
+            throw new BadRequestException(msg);
+        }
     }
 }
