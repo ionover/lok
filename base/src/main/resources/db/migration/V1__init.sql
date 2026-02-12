@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS public.geo_cashe
     coordinates      jsonb,
     coordinates_hash string
     address          jsonb,
-    address_hash     jsonb,
+    address_hash     string,
     created_at       timestamp without time zone,
 
     CONSTRAINT geo_cashe_pkey PRIMARY KEY (id)

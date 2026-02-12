@@ -3,7 +3,7 @@ package org.example.base.controller;
 import org.example.base.dto.RequestModel;
 import org.example.base.enums.Type;
 import org.example.base.exceptions.BadRequestException;
-import org.example.base.service.IConverter;
+import org.example.base.service.convert.IConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;

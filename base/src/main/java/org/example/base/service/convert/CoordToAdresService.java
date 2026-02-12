@@ -1,4 +1,4 @@
-package org.example.base.service;
+package org.example.base.service.convert;
 
 import org.example.base.enums.Type;
 import org.springframework.stereotype.Service;
