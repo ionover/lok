@@ -1,7 +1,7 @@
 package org.example.base.service.convert;
 
 import org.example.base.dto.NominationDto;
-import org.example.base.dto.SimpleCoordination;
+import org.example.base.dto.OsmAddressDto;
 import org.example.base.entity.GeoCache;
 import org.example.base.enums.Type;
 import org.example.base.repository.GeoCasheRepository;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.example.base.mappers.ToNominationMapper.mapToNominationDto;
@@ -48,9 +49,8 @@ public class CoordinatesGeocoderService implements IConverter {
         log.debug("В базе данных не удалось найти сущность по хешу, идём в интернет!");
         NominationDto answer = mapToNominationDto(webSearcher.searchByCoordinates(data));
 
-
         log.debug("Успешно нашли кеш по интернету - сохраним его потомкам.");
-//        saveDataLikeCache(data, oHash, coordinates);
+        saveCoordinatesAndAddress(data, oHash, answer.getOsmAddress());
 
         return null;
     }
@@ -58,5 +58,19 @@ public class CoordinatesGeocoderService implements IConverter {
     @Override
     public Type type() {
         return Type.COORDINATES;
+    }
+
+    private void saveCoordinatesAndAddress(JsonNode data, Optional<String> oHash, OsmAddressDto osmAddress) {
+        String coordinatesString = data.asString();
+        GeoCache geoCache = new GeoCache();
+
+        geoCache.setCoordinatesHash(oHash.orElse(""));
+        geoCache.setCoordinates(coordinatesString);
+
+        geoCache.setAddress(osmAddress.toString());
+        geoCache.setAddressHash(hasheMaker.createHash(osmAddress.toString()).orElse(""));
+
+        geoCache.setCreatedAt(LocalDateTime.now());
+        repository.save(geoCache);
     }
 }

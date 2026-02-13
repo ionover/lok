@@ -58,7 +58,7 @@ public class AddressGeocoderService implements IConverter {
             coordinates = new SimpleCoordination(answer.getLat(), answer.getLon());
 
             log.debug("Успешно нашли кеш по интернету - сохраним его потомкам.");
-            saveDataLikeCache(data, oHash, coordinates);
+            saveAddressAndCoordinates(data, oHash, coordinates);
 
             return toJsonNode(coordinates);
         } catch (NotFoundException e) {
@@ -82,7 +82,7 @@ public class AddressGeocoderService implements IConverter {
         return Type.ADDRESS;
     }
 
-    private void saveDataLikeCache(JsonNode data, Optional<String> oHash, SimpleCoordination coordinates) {
+    private void saveAddressAndCoordinates(JsonNode data, Optional<String> oHash, SimpleCoordination coordinates) {
         String coordinatesString = coordinates.toString();
         GeoCache geoCache = new GeoCache();
 
