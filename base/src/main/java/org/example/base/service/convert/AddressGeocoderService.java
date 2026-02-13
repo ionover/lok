@@ -55,7 +55,7 @@ public class AddressGeocoderService implements IConverter {
         SimpleCoordination coordinates = new SimpleCoordination();
         try {
             NominationDto answer = mapToNominationDto(webSearcher.searchByAddress(data));
-            coordinates = new SimpleCoordination(answer.getLat(), answer.getLon());
+            coordinates = new SimpleCoordination(answer.getLon(), answer.getLat());
 
             log.debug("Успешно нашли кеш по интернету - сохраним его потомкам.");
             saveAddressAndCoordinates(data, oHash, coordinates);
