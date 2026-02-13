@@ -8,7 +8,7 @@ public class NominationDto {
 
     private String lat;
     private String lon;
-    private String display_name;
+    private String displayName;
 
     private Long place_id;
     private String licence;
@@ -18,19 +18,19 @@ public class NominationDto {
     private String type;
     private Long place_rank;
     private String importance;
-    private String addresstype;
+    private String addressType;
     private String name;
-    private List<Double> boundingbox;
+    private List<Double> boundingBox;
 
     public NominationDto() {
     }
 
-    public NominationDto(String lat, String lon, String display_name, Long place_id, String licence, String osm_type,
+    public NominationDto(String lat, String lon, String displayName, Long place_id, String licence, String osm_type,
                          Long osm_id, String classs, String type, Long place_rank, String importance,
-                         String addresstype, String name, List<Double> boundingbox) {
+                         String addressType, String name, List<Double> boundingBox) {
         this.lat = lat;
         this.lon = lon;
-        this.display_name = display_name;
+        this.displayName = displayName;
         this.place_id = place_id;
         this.licence = licence;
         this.osm_type = osm_type;
@@ -39,9 +39,9 @@ public class NominationDto {
         this.type = type;
         this.place_rank = place_rank;
         this.importance = importance;
-        this.addresstype = addresstype;
+        this.addressType = addressType;
         this.name = name;
-        this.boundingbox = boundingbox;
+        this.boundingBox = boundingBox;
     }
 
     public String getLat() {
@@ -60,12 +60,12 @@ public class NominationDto {
         this.lon = lon;
     }
 
-    public String getDisplay_name() {
-        return display_name;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public Long getPlace_id() {
@@ -132,12 +132,12 @@ public class NominationDto {
         this.importance = importance;
     }
 
-    public String getAddresstype() {
-        return addresstype;
+    public String getAddressType() {
+        return addressType;
     }
 
-    public void setAddresstype(String addresstype) {
-        this.addresstype = addresstype;
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
     }
 
     public String getName() {
@@ -148,12 +148,12 @@ public class NominationDto {
         this.name = name;
     }
 
-    public List<Double> getBoundingbox() {
-        return boundingbox == null ? new ArrayList<>() : boundingbox;
+    public List<Double> getBoundingBox() {
+        return boundingBox == null ? new ArrayList<>() : boundingBox;
     }
 
-    public void setBoundingbox(List<Double> boundingbox) {
-        this.boundingbox = boundingbox == null ? new ArrayList<Double>() : boundingbox;
+    public void setBoundingBox(List<Double> boundingBox) {
+        this.boundingBox = boundingBox == null ? new ArrayList<Double>() : boundingBox;
     }
 
     @Override
@@ -161,7 +161,7 @@ public class NominationDto {
         return "{" +
                 "\"lat\":" + (lat == null ? "null" : "\"" + lat + "\"") + ", " +
                 "\"lon\":" + (lon == null ? "null" : "\"" + lon + "\"") + ", " +
-                "\"display_name\":" + (display_name == null ? "null" : "\"" + display_name + "\"") + ", " +
+                "\"display_name\":" + (displayName == null ? "null" : "\"" + displayName + "\"") + ", " +
                 "\"place_id\":" + (place_id == null ? "null" : "\"" + place_id + "\"") + ", " +
                 "\"licence\":" + (licence == null ? "null" : "\"" + licence + "\"") + ", " +
                 "\"osm_type\":" + (osm_type == null ? "null" : "\"" + osm_type + "\"") + ", " +
@@ -170,9 +170,9 @@ public class NominationDto {
                 "\"type\":" + (type == null ? "null" : "\"" + type + "\"") + ", " +
                 "\"place_rank\":" + (place_rank == null ? "null" : "\"" + place_rank + "\"") + ", " +
                 "\"importance\":" + (importance == null ? "null" : "\"" + importance + "\"") + ", " +
-                "\"addresstype\":" + (addresstype == null ? "null" : "\"" + addresstype + "\"") + ", " +
+                "\"addresstype\":" + (addressType == null ? "null" : "\"" + addressType + "\"") + ", " +
                 "\"name\":" + (name == null ? "null" : "\"" + name + "\"") + ", " +
-                "\"boundingbox\":" + (boundingbox == null ? "null" : Arrays.toString(boundingbox.toArray())) +
+                "\"boundingbox\":" + (boundingBox == null ? "null" : Arrays.toString(boundingBox.toArray())) +
                 "}";
     }
 }

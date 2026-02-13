@@ -9,8 +9,11 @@ import org.example.base.util.HasheMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Optional;
+
+import static org.flywaydb.core.internal.util.JsonUtils.toJson;
 
 @Service
 public class AddressGeocoderService implements IConverter {
@@ -30,15 +33,15 @@ public class AddressGeocoderService implements IConverter {
     @Override
     public Object convert(Object data) {
         Optional<String> oHash = hasheMaker.createHash(data);
-        Optional<GeoCache> geoCashe = Optional.empty();
+        Optional<GeoCache> oGeoCashe = Optional.empty();
         if (oHash.isPresent()) {
-            geoCashe = repository.getByAddressHash(oHash.get());
+            oGeoCashe = repository.getByAddressHash(oHash.get());
         }
 
-        if (geoCashe.isPresent()) {
+        if (oGeoCashe.isPresent()) {
             log.debug("Успешно нашли кеш внутри базы данных!");
 
-            return geoCashe.get().getCoordinates();
+            return oGeoCashe.get().getCoordinates();
         }
 
         log.debug("В базе данных не удалось найти сущность по хешу, идём в интернет!");
@@ -46,7 +49,15 @@ public class AddressGeocoderService implements IConverter {
 
         log.debug("Успешно нашли кеш по интернету - сохраним его потомкам");
         GeoCache geoCache = new GeoCache();
+        geoCache.setAddress(answer.getDisplayName());
+        geoCache.setAddressHash(hasheMaker.createHash(data));
 
+        JsonNode coordinates = toJson(answer.getLat(), answer.getLon());
+
+        geoCache.setCoordinates(coordinates);
+        geoCache.setAddressHash(hasheMaker.createHash(coordinates));
+
+        repository.save(geoCache);
 
 
         return answer;

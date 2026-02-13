@@ -22,7 +22,7 @@ public class WebSearcher {
         this.objectMapper = objectMapper;
     }
 
-    public NominationDto searchByAddress(Object data) {
+    public Object searchByAddress(Object data) {
         String address = data.toString();
         String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8);
         String url = "https://nominatim.openstreetmap.org/search?q=" + encodedAddress + "&format=json";
