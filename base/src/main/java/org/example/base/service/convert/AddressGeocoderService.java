@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.example.base.mappers.ToNominationMapper.mapToNominationDto;
@@ -89,22 +90,21 @@ public class AddressGeocoderService implements IConverter {
         GeoCache geoCache = new GeoCache();
 
         geoCache.setAddressHash(oHash.orElse(""));
-        geoCache.setAddress(data.asString());
+        geoCache.setAddress(data.toString());
 
         geoCache.setCoordinates(coordinatesString);
         geoCache.setCoordinatesHash(hasheMaker.createHash(coordinatesString).orElse(""));
 
+        geoCache.setCreatedAt(LocalDateTime.now());
         repository.save(geoCache);
     }
 
     private JsonNode toJsonNode(Object coordinates) {
         try {
-            // Если String - парсим
             if (coordinates instanceof String) {
                 return objectMapper.readTree((String) coordinates);
             }
 
-            // Иначе - сериализуем объект
             return objectMapper.valueToTree(coordinates);
         } catch (Exception e) {
             log.error("Failed to convert to JsonNode: {}", coordinates, e);
