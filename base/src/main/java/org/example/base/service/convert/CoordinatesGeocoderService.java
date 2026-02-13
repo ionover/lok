@@ -1,15 +1,62 @@
 package org.example.base.service.convert;
 
-
+import org.example.base.dto.NominationDto;
+import org.example.base.dto.SimpleCoordination;
+import org.example.base.entity.GeoCache;
 import org.example.base.enums.Type;
+import org.example.base.repository.GeoCasheRepository;
+import org.example.base.service.WebSearcher;
+import org.example.base.util.HasheMaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 
+import java.util.Optional;
+
+import static org.example.base.mappers.ToNominationMapper.mapToNominationDto;
+import static org.example.base.util.JsonConverter.toJsonNode;
+
 @Service
 public class CoordinatesGeocoderService implements IConverter {
-    @Override public Type type() { return Type.COORDINATES; }
 
-    @Override public JsonNode convert(JsonNode data) {
-        return null; // заглушка
+    private final Logger log = LoggerFactory.getLogger(CoordinatesGeocoderService.class);
+
+    private final HasheMaker hasheMaker;
+    private final GeoCasheRepository repository;
+    private final WebSearcher webSearcher;
+
+    public CoordinatesGeocoderService(HasheMaker hasheMaker, GeoCasheRepository repository, WebSearcher webSearcher) {
+        this.hasheMaker = hasheMaker;
+        this.repository = repository;
+        this.webSearcher = webSearcher;
+    }
+
+    @Override
+    public JsonNode convert(JsonNode data) {
+        Optional<String> oHash = hasheMaker.createHash(data);
+        Optional<GeoCache> oGeoCashe = Optional.empty();
+        if (oHash.isPresent()) {
+            oGeoCashe = repository.getByAddressHash(oHash.get());
+        }
+        if (oGeoCashe.isPresent()) {
+            log.debug("Успешно нашли кеш внутри базы данных!");
+
+            return toJsonNode(oGeoCashe.get().getCoordinates());
+        }
+
+        log.debug("В базе данных не удалось найти сущность по хешу, идём в интернет!");
+        NominationDto answer = mapToNominationDto(webSearcher.searchByCoordinates(data));
+
+
+        log.debug("Успешно нашли кеш по интернету - сохраним его потомкам.");
+//        saveDataLikeCache(data, oHash, coordinates);
+
+        return null;
+    }
+
+    @Override
+    public Type type() {
+        return Type.COORDINATES;
     }
 }

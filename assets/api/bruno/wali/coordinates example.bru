@@ -1,7 +1,7 @@
 meta {
-  name: address example
+  name: coordinates example
   type: http
-  seq: 1
+  seq: 3
 }
 
 post {
@@ -12,9 +12,10 @@ post {
 
 body:json {
   {
-    "type": "ADDRESS",
+    "type": "COORDINATES",
     "payload": {
-      "city": "Москва"
+      "x": "50.60",
+      "y": "60.50"
     }
   }
 }

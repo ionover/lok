@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.example.base.mappers.ToNominationMapper.mapToNominationDto;
+import static org.example.base.util.JsonConverter.toJsonNode;
 
 @Service
 public class AddressGeocoderService implements IConverter {
@@ -29,16 +29,13 @@ public class AddressGeocoderService implements IConverter {
     private final HasheMaker hasheMaker;
     private final GeoCasheRepository repository;
     private final WebSearcher webSearcher;
-    private final ObjectMapper objectMapper;
 
     public AddressGeocoderService(GeoCasheRepository repository,
                                   HasheMaker hasheMaker,
-                                  WebSearcher webSearcher,
-                                  ObjectMapper objectMapper) {
+                                  WebSearcher webSearcher) {
         this.repository = repository;
         this.hasheMaker = hasheMaker;
         this.webSearcher = webSearcher;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -97,19 +94,5 @@ public class AddressGeocoderService implements IConverter {
 
         geoCache.setCreatedAt(LocalDateTime.now());
         repository.save(geoCache);
-    }
-
-    private JsonNode toJsonNode(Object coordinates) {
-        try {
-            if (coordinates instanceof String) {
-                return objectMapper.readTree((String) coordinates);
-            }
-
-            return objectMapper.valueToTree(coordinates);
-        } catch (Exception e) {
-            log.error("Failed to convert to JsonNode: {}", coordinates, e);
-
-            throw new IllegalArgumentException("Ошибка конвертации в JSON: " + e.getMessage());
-        }
     }
 }
