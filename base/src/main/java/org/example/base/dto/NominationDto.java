@@ -14,20 +14,20 @@ public class NominationDto {
     private String licence;
     private String osm_type;
     private Long osm_id;
-    private String classs;
     private String type;
     private Long place_rank;
     private String importance;
     private String addressType;
     private String name;
     private List<Double> boundingBox;
+    private OsmAddressDto osmAddress;
 
     public NominationDto() {
     }
 
     public NominationDto(String lat, String lon, String displayName, Long place_id, String licence, String osm_type,
-                         Long osm_id, String classs, String type, Long place_rank, String importance,
-                         String addressType, String name, List<Double> boundingBox) {
+                         Long osm_id, String type, Long place_rank, String importance, String addressType, String name,
+                         List<Double> boundingBox, OsmAddressDto osmAddress) {
         this.lat = lat;
         this.lon = lon;
         this.displayName = displayName;
@@ -35,13 +35,13 @@ public class NominationDto {
         this.licence = licence;
         this.osm_type = osm_type;
         this.osm_id = osm_id;
-        this.classs = classs;
         this.type = type;
         this.place_rank = place_rank;
         this.importance = importance;
         this.addressType = addressType;
         this.name = name;
         this.boundingBox = boundingBox;
+        this.osmAddress = osmAddress;
     }
 
     public String getLat() {
@@ -100,14 +100,6 @@ public class NominationDto {
         this.osm_id = osm_id;
     }
 
-    public String getClasss() {
-        return classs;
-    }
-
-    public void setClasss(String classs) {
-        this.classs = classs;
-    }
-
     public String getType() {
         return type;
     }
@@ -156,6 +148,14 @@ public class NominationDto {
         this.boundingBox = boundingBox == null ? new ArrayList<Double>() : boundingBox;
     }
 
+    public OsmAddressDto getOsmAddress() {
+        return osmAddress;
+    }
+
+    public void setOsmAddress(OsmAddressDto osmAddress) {
+        this.osmAddress = osmAddress;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -166,13 +166,13 @@ public class NominationDto {
                 "\"licence\":" + (licence == null ? "null" : "\"" + licence + "\"") + ", " +
                 "\"osm_type\":" + (osm_type == null ? "null" : "\"" + osm_type + "\"") + ", " +
                 "\"osm_id\":" + (osm_id == null ? "null" : "\"" + osm_id + "\"") + ", " +
-                "\"classs\":" + (classs == null ? "null" : "\"" + classs + "\"") + ", " +
                 "\"type\":" + (type == null ? "null" : "\"" + type + "\"") + ", " +
                 "\"place_rank\":" + (place_rank == null ? "null" : "\"" + place_rank + "\"") + ", " +
                 "\"importance\":" + (importance == null ? "null" : "\"" + importance + "\"") + ", " +
                 "\"addresstype\":" + (addressType == null ? "null" : "\"" + addressType + "\"") + ", " +
                 "\"name\":" + (name == null ? "null" : "\"" + name + "\"") + ", " +
                 "\"boundingbox\":" + (boundingBox == null ? "null" : Arrays.toString(boundingBox.toArray())) +
+                "\"osmAddress\":" + (osmAddress == null ? "null" : "\"" + osmAddress + "\"") + ", " +
                 "}";
     }
 }

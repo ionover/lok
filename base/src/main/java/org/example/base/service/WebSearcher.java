@@ -41,8 +41,8 @@ public class WebSearcher {
                                                        " Пример: {\"x\":\"50.60\",\"y\":\"60.50\"}");
         }
 
-        String x = xNode.toString();
-        String y = yNode.toString();
+        String x = xNode.asString();
+        String y = yNode.asString();
 
         String encodedLon = URLEncoder.encode(x, StandardCharsets.UTF_8);
         String encodedLat = URLEncoder.encode(y, StandardCharsets.UTF_8);
