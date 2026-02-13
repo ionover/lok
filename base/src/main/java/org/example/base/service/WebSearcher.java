@@ -3,6 +3,7 @@ package org.example.base.service;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.example.base.dto.NominationDto;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -21,7 +22,7 @@ public class WebSearcher {
         this.objectMapper = objectMapper;
     }
 
-    public JsonNode searchByAddress(Object data) {
+    public NominationDto searchByAddress(Object data) {
         String address = data.toString();
         String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8);
         String url = "https://nominatim.openstreetmap.org/search?q=" + encodedAddress + "&format=json";

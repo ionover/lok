@@ -1,5 +1,6 @@
 package org.example.base.service.convert;
 
+import org.example.base.dto.NominationDto;
 import org.example.base.entity.GeoCache;
 import org.example.base.enums.Type;
 import org.example.base.repository.GeoCasheRepository;
@@ -8,7 +9,6 @@ import org.example.base.util.HasheMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
@@ -42,7 +42,12 @@ public class AddressGeocoderService implements IConverter {
         }
 
         log.debug("В базе данных не удалось найти сущность по хешу, идём в интернет!");
-        JsonNode answer = webSearcher.searchByAddress(data);
+        NominationDto answer = webSearcher.searchByAddress(data);
+
+        log.debug("Успешно нашли кеш по интернету - сохраним его потомкам");
+        GeoCache geoCache = new GeoCache();
+
+
 
         return answer;
     }
