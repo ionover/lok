@@ -39,7 +39,7 @@ public class AddressGeocoderService implements IConverter {
     }
 
     @Override
-    public Object convert(JsonNode data) {
+    public JsonNode convert(JsonNode data) {
         Optional<String> oHash = hasheMaker.createHash(data);
         Optional<GeoCache> oGeoCashe = Optional.empty();
         if (oHash.isPresent()) {
@@ -60,7 +60,7 @@ public class AddressGeocoderService implements IConverter {
             log.debug("Успешно нашли кеш по интернету - сохраним его потомкам.");
             saveDataLikeCache(data, oHash, coordinates);
 
-            return answer;
+            return coordinates;
         } catch (NotFoundException e) {
             log.error(e.getMessage());
 
@@ -69,7 +69,11 @@ public class AddressGeocoderService implements IConverter {
             log.warn("Сервис успешно нашёл информацию по сети, но не смог сохранить её в базу. Причина: {}",
                      e.getMessage());
 
-            return coordinates;
+            if (coordinates != null) {
+                return coordinates;
+            }
+
+            throw new TransformationException("Сервис вернул ответ, но он не содержит координат " + e.getMessage());
         }
     }
 
@@ -80,7 +84,7 @@ public class AddressGeocoderService implements IConverter {
         geoCache.setAddress(data);
 
         geoCache.setCoordinates(coordinates);
-        geoCache.setAddressHash(hasheMaker.createHash(coordinates).orElse(""));
+        geoCache.setCoordinatesHash(hasheMaker.createHash(coordinates).orElse(""));
 
         repository.save(geoCache);
     }

@@ -45,7 +45,7 @@ public class NominationDto {
     }
 
     public String getLat() {
-        return lat;
+        return lat == null ? "" : lat;
     }
 
     public void setLat(String lat) {
@@ -53,7 +53,7 @@ public class NominationDto {
     }
 
     public String getLon() {
-        return lon;
+        return lon == null ? "" : lon;
     }
 
     public void setLon(String lon) {

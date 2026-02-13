@@ -9,7 +9,7 @@ import tools.jackson.databind.JsonNode;
 public class CoordinatesGeocoderService implements IConverter {
     @Override public Type type() { return Type.COORDINATES; }
 
-    @Override public Object convert(JsonNode data) {
-        return "converted COORDINATES -> ADDRESS"; // заглушка
+    @Override public JsonNode convert(JsonNode data) {
+        return null; // заглушка
     }
 }

@@ -11,13 +11,12 @@ public class ToNominationMapper {
 
         JsonNode jsonNode = (JsonNode) rawData;
 
-        // Nominatim возвращает МАССИВ результатов, берём первый элемент
         if (jsonNode.isArray() && !jsonNode.isEmpty()) {
             JsonNode firstResult = jsonNode.get(0);
 
             return objectMapper.convertValue(firstResult, NominationDto.class);
         }
 
-        throw new RuntimeException("No geocoding results found");
+        throw new IllegalArgumentException("Объект [" + rawData + "] не удалось превратить в NominationDto");
     }
 }

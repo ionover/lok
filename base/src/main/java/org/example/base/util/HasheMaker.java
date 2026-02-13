@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Component
 public class HasheMaker {
+
     private final Logger log = LoggerFactory.getLogger(HasheMaker.class);
 
     private final String BASE_HASE_ALGORITHM = "SHA-256";
@@ -20,13 +21,17 @@ public class HasheMaker {
             MessageDigest md = MessageDigest.getInstance(BASE_HASE_ALGORITHM);
             byte[] digest = md.digest(data.toString().getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder(digest.length * 2);
-            for (byte b : digest) {
+            for (byte b: digest) {
                 sb.append(String.format("%02x", b));
             }
 
             return Optional.of(sb.toString());
         } catch (NoSuchAlgorithmException e) {
             log.warn("Алгоритм хеширования " + BASE_HASE_ALGORITHM + " не доступен", e);
+
+            return Optional.empty();
+        } catch (Exception e) {
+            log.warn("Непредвиденная ошибка в процессе формирования хэша: {}", e.getMessage());
 
             return Optional.empty();
         }

@@ -5,5 +5,5 @@ import org.example.base.enums.Type;
 
 public interface IConverter {
     Type type();
-    Object convert(JsonNode data);
+    JsonNode convert(JsonNode data);
 }

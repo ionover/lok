@@ -3,6 +3,8 @@ package org.example.base.controller;
 import org.example.base.dto.RequestModel;
 import org.example.base.enums.Type;
 import org.example.base.exceptions.BadRequestException;
+import org.example.base.exceptions.InternalServerException;
+import org.example.base.exceptions.TransformationException;
 import org.example.base.service.convert.IConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,7 @@ public class BaseController {
 
     public BaseController(List<IConverter> converters) {
         this.converters = converters.stream()
-                .collect(toMap(IConverter::type, Function.identity()));
+                                    .collect(toMap(IConverter::type, Function.identity()));
     }
 
     @PostMapping
@@ -42,6 +44,8 @@ public class BaseController {
 
         try {
             return converter.convert(model.getPayload());
+        } catch (TransformationException e) {
+            throw new InternalServerException("Сервис не смог обработать запрос. Причина: " + e.getMessage());
         } catch (Exception e) {
             String msg = String.format("При конвертации произошла ошибка: %s", e.getMessage());
             log.error(msg);

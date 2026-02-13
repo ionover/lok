@@ -33,12 +33,16 @@ public class WebSearcher {
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
 
-            String responseBody = response.body().string();
+                return objectMapper.readTree(responseBody);
+            }
 
-            return objectMapper.readTree(responseBody);
+            throw new NotFoundException("OSM вернул неуспешный ответ, либо ответ с пустым телом. Подробнее => " +
+                                                response);
         } catch (Exception e) {
-            throw new NotFoundException(e.getMessage());
+            throw new NotFoundException("Ошибка во время выполнения запроса на openstreetmap: " + e.getMessage());
         }
     }
 }
