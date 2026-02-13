@@ -17,6 +17,10 @@ public class ToNominationMapper {
             return objectMapper.convertValue(firstResult, NominationDto.class);
         }
 
+        if (jsonNode.isObject()) {
+            return objectMapper.convertValue(jsonNode, NominationDto.class);
+        }
+
         throw new IllegalArgumentException("Объект [" + rawData + "] не удалось превратить в NominationDto");
     }
 }
