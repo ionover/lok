@@ -20,14 +20,14 @@ public class NominationDto {
     private String addressType;
     private String name;
     private List<Double> boundingBox;
-    private OsmAddressDto osmAddress;
+    private OsmAddressDto address;
 
     public NominationDto() {
     }
 
     public NominationDto(String lat, String lon, String displayName, Long place_id, String licence, String osm_type,
                          Long osm_id, String type, Long place_rank, String importance, String addressType, String name,
-                         List<Double> boundingBox, OsmAddressDto osmAddress) {
+                         List<Double> boundingBox, OsmAddressDto address) {
         this.lat = lat;
         this.lon = lon;
         this.displayName = displayName;
@@ -41,7 +41,7 @@ public class NominationDto {
         this.addressType = addressType;
         this.name = name;
         this.boundingBox = boundingBox;
-        this.osmAddress = osmAddress;
+        this.address = address;
     }
 
     public String getLat() {
@@ -148,12 +148,12 @@ public class NominationDto {
         this.boundingBox = boundingBox == null ? new ArrayList<Double>() : boundingBox;
     }
 
-    public OsmAddressDto getOsmAddress() {
-        return osmAddress;
+    public OsmAddressDto getAddress() {
+        return address;
     }
 
-    public void setOsmAddress(OsmAddressDto osmAddress) {
-        this.osmAddress = osmAddress;
+    public void setAddress(OsmAddressDto address) {
+        this.address = address;
     }
 
     @Override
@@ -172,7 +172,7 @@ public class NominationDto {
                 "\"addresstype\":" + (addressType == null ? "null" : "\"" + addressType + "\"") + ", " +
                 "\"name\":" + (name == null ? "null" : "\"" + name + "\"") + ", " +
                 "\"boundingbox\":" + (boundingBox == null ? "null" : Arrays.toString(boundingBox.toArray())) +
-                "\"osmAddress\":" + (osmAddress == null ? "null" : "\"" + osmAddress + "\"") + ", " +
+                "\"osmAddress\":" + (address == null ? "null" : "\"" + address + "\"") + ", " +
                 "}";
     }
 }

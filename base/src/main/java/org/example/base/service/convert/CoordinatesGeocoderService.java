@@ -50,9 +50,9 @@ public class CoordinatesGeocoderService implements IConverter {
         NominationDto answer = mapToNominationDto(webSearcher.searchByCoordinates(data));
 
         log.debug("Успешно нашли кеш по интернету - сохраним его потомкам.");
-        saveCoordinatesAndAddress(data, oHash, answer.getOsmAddress());
+        saveCoordinatesAndAddress(data, oHash, answer.getAddress());
 
-        return null;
+        return toJsonNode(answer.getAddress());
     }
 
     @Override
@@ -61,14 +61,15 @@ public class CoordinatesGeocoderService implements IConverter {
     }
 
     private void saveCoordinatesAndAddress(JsonNode data, Optional<String> oHash, OsmAddressDto osmAddress) {
-        String coordinatesString = data.asString();
+        String coordinatesString = data.toString();
         GeoCache geoCache = new GeoCache();
 
         geoCache.setCoordinatesHash(oHash.orElse(""));
         geoCache.setCoordinates(coordinatesString);
 
-        geoCache.setAddress(osmAddress.toString());
-        geoCache.setAddressHash(hasheMaker.createHash(osmAddress.toString()).orElse(""));
+        String addressString = osmAddress.toString();
+        geoCache.setAddress(addressString);
+        geoCache.setAddressHash(hasheMaker.createHash(addressString).orElse(""));
 
         geoCache.setCreatedAt(LocalDateTime.now());
         repository.save(geoCache);
