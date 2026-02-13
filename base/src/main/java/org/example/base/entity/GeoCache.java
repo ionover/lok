@@ -8,31 +8,34 @@ import tools.jackson.databind.JsonNode;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "geo_cashe", schema = "public")
-public class GeoCashe {
+@Table(name = "geo_cache", schema = "public")
+public class GeoCache {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "coordinates")
     private JsonNode coordinates;
 
-    @Column
+    @Column(name = "coordinates_hash")
     private String coordinatesHash;
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "address")
     private JsonNode address;
 
-    @Column
+    @Column(name = "address_hash")
     private String addressHash;
 
-    @Column()
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public GeoCashe() {
+    public GeoCache() {
     }
 
-    public GeoCashe(Long id, JsonNode coordinates, String coordinatesHash,
+    public GeoCache(Long id, JsonNode coordinates, String coordinatesHash,
                     JsonNode address, String addressHash, LocalDateTime createdAt) {
         this.id = id;
         this.coordinates = coordinates;
@@ -74,11 +77,11 @@ public class GeoCashe {
         this.address = address;
     }
 
-    public String getaddressHash() {
+    public String getAddressHash() {
         return addressHash;
     }
 
-    public void setaddressHash(String addressHash) {
+    public void setAddressHash(String addressHash) {
         this.addressHash = addressHash;
     }
 
@@ -92,7 +95,7 @@ public class GeoCashe {
 
     @Override
     public String toString() {
-        return "GeoCashe{" +
+        return "GeoCache{" +
                 "id=" + id +
                 ", coordinates=" + coordinates +
                 ", coordinatesHash='" + coordinatesHash + '\'' +

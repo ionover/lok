@@ -1,3 +1,22 @@
 spring:
   application:
     name: base
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/base
+    username: base
+    password: base
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  flyway:
+    enabled: true
+
+logging:
+  level:
+    org.flywaydb: DEBUG

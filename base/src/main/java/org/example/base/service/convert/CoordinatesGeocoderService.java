@@ -4,7 +4,7 @@ import org.example.base.enums.Type;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CoordToAdresService implements IConverter {
+public class CoordinatesGeocoderService implements IConverter {
     @Override public Type type() { return Type.COORDINATES; }
 
     @Override public Object convert(Object data) {
