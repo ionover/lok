@@ -5,7 +5,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface GeoCasheRepository extends CrudRepository<GeoCache, Long> {
+public interface GeoCacheRepository extends CrudRepository<GeoCache, Long> {
 
     Optional<GeoCache> getByAddressHash(String addressHash);
+
+    Optional<GeoCache> getByCoordinatesHash(String coordinatesHash);
 }
