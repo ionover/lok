@@ -41,7 +41,7 @@ public class BaseController {
         }
 
         try {
-            return converter.convert(model.getRequest());
+            return converter.convert(model.getPayload());
         } catch (Exception e) {
             String msg = String.format("При конвертации произошла ошибка: %s", e.getMessage());
             log.error(msg);

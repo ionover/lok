@@ -3,9 +3,8 @@ package org.example.base.service;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.example.base.dto.NominationDto;
+import org.example.base.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.net.URLEncoder;
@@ -39,7 +38,7 @@ public class WebSearcher {
 
             return objectMapper.readTree(responseBody);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new NotFoundException(e.getMessage());
         }
     }
 }

@@ -1,5 +1,6 @@
 package org.example.base.dto;
 
+import tools.jackson.databind.JsonNode;
 import jakarta.validation.constraints.NotNull;
 import org.example.base.enums.Type;
 
@@ -8,14 +9,14 @@ public class RequestModel {
     @NotNull
     private Type type;
     @NotNull
-    private Object request;
+    private JsonNode payload;
 
     public RequestModel() {
     }
 
-    public RequestModel(Type type, Object request) {
+    public RequestModel(Type type, JsonNode payload) {
         this.type = type;
-        this.request = request;
+        this.payload = payload;
     }
 
     public Type getType() {
@@ -26,19 +27,19 @@ public class RequestModel {
         this.type = type;
     }
 
-    public Object getRequest() {
-        return request;
+    public JsonNode getPayload() {
+        return payload;
     }
 
-    public void setRequest(Object request) {
-        this.request = request;
+    public void setPayload(JsonNode payload) {
+        this.payload = payload;
     }
 
     @Override
     public String toString() {
         return "RequestModel{" +
                 "type=" + type +
-                ", request=" + request +
+                ", request=" + payload +
                 '}';
     }
 }
