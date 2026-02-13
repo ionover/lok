@@ -1,9 +1,9 @@
 package org.example.base.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
+import jakarta.validation.constraints.Size;
 import org.hibernate.type.SqlTypes;
-import tools.jackson.databind.JsonNode;
+
 
 import java.time.LocalDateTime;
 
@@ -15,18 +15,18 @@ public class GeoCache {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "coordinates")
-    private JsonNode coordinates;
+    private String coordinates;
 
     @Column(name = "coordinates_hash")
+    @Size(max = 255)
     private String coordinatesHash;
 
-    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "address")
-    private JsonNode address;
+    private String address;
 
     @Column(name = "address_hash")
+    @Size(max = 255)
     private String addressHash;
 
     @Column(name = "created_at")
@@ -35,8 +35,8 @@ public class GeoCache {
     public GeoCache() {
     }
 
-    public GeoCache(Long id, JsonNode coordinates, String coordinatesHash,
-                    JsonNode address, String addressHash, LocalDateTime createdAt) {
+    public GeoCache(Long id, String coordinates, String coordinatesHash,
+                    String address, String addressHash, LocalDateTime createdAt) {
         this.id = id;
         this.coordinates = coordinates;
         this.coordinatesHash = coordinatesHash;
@@ -53,11 +53,11 @@ public class GeoCache {
         return id;
     }
 
-    public JsonNode getCoordinates() {
+    public String getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(JsonNode coordinates) {
+    public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -69,11 +69,11 @@ public class GeoCache {
         this.coordinatesHash = coordinatesHash;
     }
 
-    public JsonNode getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(JsonNode address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 

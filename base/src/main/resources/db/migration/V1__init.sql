@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS public.geo_cache
 (
     id               bigserial                   NOT NULL,
-    coordinates      jsonb,
+    coordinates      text,
     coordinates_hash varchar(255),
-    address          jsonb,
+    address          text,
     address_hash     varchar(255),
     created_at       timestamp without time zone,
 

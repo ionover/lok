@@ -30,7 +30,9 @@ public class AddressGeocoderService implements IConverter {
     private final WebSearcher webSearcher;
     private final ObjectMapper objectMapper;
 
-    public AddressGeocoderService(GeoCasheRepository repository, HasheMaker hasheMaker, WebSearcher webSearcher,
+    public AddressGeocoderService(GeoCasheRepository repository,
+                                  HasheMaker hasheMaker,
+                                  WebSearcher webSearcher,
                                   ObjectMapper objectMapper) {
         this.repository = repository;
         this.hasheMaker = hasheMaker;
@@ -48,19 +50,19 @@ public class AddressGeocoderService implements IConverter {
         if (oGeoCashe.isPresent()) {
             log.debug("Успешно нашли кеш внутри базы данных!");
 
-            return oGeoCashe.get().getCoordinates();
+            return toJsonNode(oGeoCashe.get().getCoordinates());
         }
 
         log.debug("В базе данных не удалось найти сущность по хешу, идём в интернет!");
-        JsonNode coordinates = null;
+        SimpleCoordination coordinates = new SimpleCoordination();
         try {
             NominationDto answer = mapToNominationDto(webSearcher.searchByAddress(data));
-            coordinates = objectMapper.valueToTree(new SimpleCoordination(answer.getLat(), answer.getLon()));
+            coordinates = new SimpleCoordination(answer.getLat(), answer.getLon());
 
             log.debug("Успешно нашли кеш по интернету - сохраним его потомкам.");
             saveDataLikeCache(data, oHash, coordinates);
 
-            return coordinates;
+            return toJsonNode(coordinates);
         } catch (NotFoundException e) {
             log.error(e.getMessage());
 
@@ -69,28 +71,45 @@ public class AddressGeocoderService implements IConverter {
             log.warn("Сервис успешно нашёл информацию по сети, но не смог сохранить её в базу. Причина: {}",
                      e.getMessage());
 
-            if (coordinates != null) {
-                return coordinates;
+            if (!coordinates.getX().isBlank() || !coordinates.getY().isBlank()) {
+                return toJsonNode(coordinates);
             }
 
             throw new TransformationException("Сервис вернул ответ, но он не содержит координат " + e.getMessage());
         }
     }
 
-    private void saveDataLikeCache(JsonNode data, Optional<String> oHash, JsonNode coordinates) {
+    @Override
+    public Type type() {
+        return Type.ADDRESS;
+    }
+
+    private void saveDataLikeCache(JsonNode data, Optional<String> oHash, SimpleCoordination coordinates) {
+        String coordinatesString = coordinates.toString();
         GeoCache geoCache = new GeoCache();
 
         geoCache.setAddressHash(oHash.orElse(""));
-        geoCache.setAddress(data);
+        geoCache.setAddress(data.asString());
 
-        geoCache.setCoordinates(coordinates);
-        geoCache.setCoordinatesHash(hasheMaker.createHash(coordinates).orElse(""));
+        geoCache.setCoordinates(coordinatesString);
+        geoCache.setCoordinatesHash(hasheMaker.createHash(coordinatesString).orElse(""));
 
         repository.save(geoCache);
     }
 
-    @Override
-    public Type type() {
-        return Type.ADDRESS;
+    private JsonNode toJsonNode(Object coordinates) {
+        try {
+            // Если String - парсим
+            if (coordinates instanceof String) {
+                return objectMapper.readTree((String) coordinates);
+            }
+
+            // Иначе - сериализуем объект
+            return objectMapper.valueToTree(coordinates);
+        } catch (Exception e) {
+            log.error("Failed to convert to JsonNode: {}", coordinates, e);
+
+            throw new IllegalArgumentException("Ошибка конвертации в JSON: " + e.getMessage());
+        }
     }
 }
