@@ -28,6 +28,7 @@
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <flyway.version>12.0.1</flyway.version>
     </properties>
 
 </project>

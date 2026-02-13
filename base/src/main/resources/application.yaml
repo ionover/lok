@@ -9,14 +9,11 @@ spring:
   
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   
   flyway:
     enabled: true
-
-logging:
-  level:
-    org.flywaydb: DEBUG
+    baseline-on-migrate: true
